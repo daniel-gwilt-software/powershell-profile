@@ -1,26 +1,42 @@
-Import-Module 'C:\tools\poshgit\dahlbyk-posh-git-a4faccd\src\posh-git.psd1'
 
-# Update path for SSH (Loaded in PowerShell Profile)
-$env:path += ";" + (Get-Item "Env:ProgramFiles").Value + "\Git\bin"
-$env:path += ";" + (Get-Item "Env:ProgramFiles").Value + "\Git\usr\bin"
+set-location $HOME\projects
 
-# Load SSH agent utils
-. (Resolve-Path ~/Documents/WindowsPowershell/ssh-agent-utils.ps1)
+Import-Module posh-git
+$GitPromptSettings.DefaultPromptAbbreviateHomeDirectory = $true
 
 # Spoof terminal environment for git color.
 $env:TERM = 'cygwin'
 
-# Load posh-git example profile, which will setup a prompt
-. 'C:\tools\poshgit\dahlbyk-posh-git-a4faccd\profile.example.ps1'
-
-Pop-Location
-
-Add-SshKey
+# Set Environment Variables
+$env:HOME = $env:USERPROFILE
+$env:HOMEDRIVE = "C:"
+$env:HOMEPATH = "\Users\"+ $env:USERNAME +"\"
 
 ## Daniel Gwilt's Profile Settings ##
 New-Alias ll ls
+New-Alias tsc $HOME\AppData\Roaming\npm\tsc.cmd
+New-Alias karma $HOME\AppData\Roaming\npm\karma.cmd
+New-Alias jasmine $HOME\AppData\Roaming\npm\jasmine-ts.cmd
+New-Alias ng $HOME\AppData\Roaming\npm\ng.cmd
+New-Alias pm2 $HOME\AppData\Roaming\npm\pm2.cmd
+New-Alias pm2-dev $HOME\AppData\Roaming\npm\pm2-dev.cmd
+New-Alias pm2-docker $HOME\AppData\Roaming\npm\pm2-docker.cmd
+New-Alias pm2-runtime $HOME\AppData\Roaming\npm\pm2-runtime.cmd
+New-Alias sass $HOME\AppData\Roaming\npm\sass.cmd
+New-Alias install-local $HOME\AppData\Roaming\npm\install-local.cmd
+New-Alias python2 C:\Python27\python.exe
+New-Alias python3 "C:\Program Files\Python36\python.exe"
+New-Alias pip3 "C:\Program Files\Python36\Scripts\pip.exe"
+New-Alias gremlin Start-Gremlin-CLI
+
+function Start-Gremlin-CLI {
+    Start-Process -NoNewWindow `
+        -WorkingDirectory "$HOMEDRIVE\Program Files\apache-tinkerpop-gremlin-console\bin" `
+        -FilePath "$HOMEDRIVE\Program Files\apache-tinkerpop-gremlin-console\bin\gremlin.bat"
+}
 
 ## Color Theme ##
 [console]::ForegroundColor = "Green"
 [console]::BackgroundColor = "Black"
-Clear-Host
+
+#Clear-Host
